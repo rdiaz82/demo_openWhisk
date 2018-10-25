@@ -42,7 +42,7 @@ fn main() {
     item.insert(
         "measurement".to_string(),
         AttributeValue {
-            n: Some(measurement),
+            n: Some(measurement.clone()),
             ..Default::default()
         },
     );
@@ -63,12 +63,14 @@ fn main() {
     match client.put_item(put_item).sync() {
         Ok(_) => {
             let out = core::Output {
-                message: "ok".to_string(),
+                status: "ok".to_string(),
+                message: measurement,
             };
             println!("{}", json::encode(&out).unwrap())
         }
         Err(error) => {
             let out = core::Output {
+                status: "error".to_string(),
                 message: error.to_string(),
             };
             println!("{}", json::encode(&out).unwrap())

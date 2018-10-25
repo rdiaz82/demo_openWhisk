@@ -7,6 +7,7 @@ use std::env;
 #[derive(RustcDecodable, RustcEncodable)]
 pub struct Output {
     pub message: String,
+    pub status: String,
 }
 
 pub fn set_env() {
