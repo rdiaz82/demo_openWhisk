@@ -7,7 +7,11 @@ wsk action delete putMeasurement -i
 wsk action delete sendRealTimeMsg -i
 wsk action delete logMeasurement -i
 wsk action delete dispatchAlarm -i
-
+wsk action delete sendTelegramMsg -i
+wsk action delete alarmMeasurement -i
+wsk rule delete dBProccess -i
+wsk rule delete alarmProccess -i
+wsk trigger delete commandSaveMeasurement -i
 
 mkdir ./temp
 cd temp
@@ -28,4 +32,19 @@ wsk action create logMeasurement --sequence putMeasurement,sendRealTimeMsg -i
 #Action: Check alarm value
 cp ../target/x86_64-unknown-linux-musl/release/alarm ./exec
 zip alarm.zip ./exec
-wsk action create dispatchAlarm ./alarm.zip --native --param TRIGGER_VALUE \"45\" -i
+wsk action create dispatchAlarm ./alarm.zip --native --param AWS_KEY $AWS_ACCESS_KEY_ID --param AWS_SECRET $AWS_SECRET_ACCESS_KEY --param TRIGGER_VALUE \"45\" -i
+
+#Action: Send telegram message
+cp ../target/x86_64-unknown-linux-musl/release/publish_telegram ./exec
+zip publish_telegram.zip ./exec
+wsk action create sendTelegramMsg ./publish_telegram.zip --native --param API_KEY $TELEGRAM_API_KEY --param CHANNEL_ID   \"$TELEGRAM_CHANNEL\" -i
+
+#Sequence action check_alarm -> send_telegram_msg
+wsk action create alarmMeasurement --sequence dispatchAlarm,sendTelegramMsg -i
+
+#Trigger to run in parallel save in database an check alarms
+wsk trigger create commandSaveMeasurement -i
+wsk rule create dBProccess commandSaveMeasurement logMeasurement -i
+wsk rule create alarmProccess commandSaveMeasurement alarmMeasurement -i
+
+
