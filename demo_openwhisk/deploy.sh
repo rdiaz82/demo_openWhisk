@@ -13,6 +13,7 @@ wsk action delete alarmMeasurement -i
 wsk rule delete dBProccess -i
 wsk rule delete alarmProccess -i
 wsk trigger delete commandSaveMeasurement -i
+wsk action delete fetchData -i
 
 mkdir ./temp
 cd temp
@@ -48,4 +49,8 @@ wsk trigger create commandSaveMeasurement -i
 wsk rule create dBProccess commandSaveMeasurement logMeasurement -i
 wsk rule create alarmProccess commandSaveMeasurement alarmMeasurement -i
 
+#Create action for fetch_data from DynamoDb
+cp ../target/x86_64-unknown-linux-musl/release/fetch_data ./exec
+zip fetch_data.zip ./exec
+wsk action create fetchData ./fetch_data.zip --native --param AWS_KEY $AWS_ACCESS_KEY_ID --param AWS_SECRET $AWS_SECRET_ACCESS_KEY --param minutes 60 -i
 
