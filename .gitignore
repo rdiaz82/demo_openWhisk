@@ -15,3 +15,7 @@ Cargo.lock
 .DS_Store
 .AppleDouble
 .LSOverride
+
+### REACT APP ###
+/front/node_modules
+/front/.env
