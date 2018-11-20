@@ -19,5 +19,5 @@ fn main() {
             }
         }
     };
-    println!("{}", core::save_measurement_to_db(measurement, sensor));
+    println!("{}", core::log_repository::save_measurement_to_db(measurement, sensor));
 }

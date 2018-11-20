@@ -1,98 +1,159 @@
-import React, {Component} from 'react';
-import {Bar, Line, Pie} from 'react-chartjs-2';
+import React, {
+  Component
+} from 'react';
+import {
+  Line
+} from 'react-chartjs-2';
 
-import { defaults } from 'react-chartjs-2';
+import {
+  defaults
+} from 'react-chartjs-2';
 import * as RealtimeMessaging from 'realtime-messaging';
 import dotenv from 'dotenv';
-
 
 // Disable animating charts by default.
 defaults.global.animation = false;
 
-class Chart extends Component{
+class Chart extends Component {
 
   state = {
-    displayTitle:true,
+    displayTitle: true,
     displayLegend: true,
-      legendPosition:'right',
-      data : {
-          labels: ['0', '1', '2', '3', '4', '5', '6'],
-          datasets: [
-              {
-                  label: 'My First dataset',
-                  fill: false,
-                  lineTension: 0.1,
-                  backgroundColor: 'rgba(75,192,192,0.4)',
-                  borderColor: 'rgba(75,192,192,1)',
-                  borderCapStyle: 'butt',
-                  borderDash: [],
-                  borderDashOffset: 0.0,
-                  borderJoinStyle: 'miter',
-                  pointBorderColor: 'rgba(75,192,192,1)',
-                  pointBackgroundColor: '#fff',
-                  pointBorderWidth: 1,
-                  pointHoverRadius: 5,
-                  pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                  pointHoverBorderColor: 'rgba(220,220,220,1)',
-                  pointHoverBorderWidth: 2,
-                  pointRadius: 1,
-                  pointHitRadius: 10,
-                  data: [65, 59, 80, 81, 56, 55, 40]
-              }
-          ]
-      }
+    legendPosition: 'right',
+    data: {
+      datasets: [{
+        label: this.props.label,
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: 'rgba(75,192,192,0.4)',
+        borderColor: 'rgba(75,192,192,1)',
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: 'rgba(75,192,192,1)',
+        pointBackgroundColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+        pointHoverBorderColor: 'rgba(220,220,220,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+      }]
+    },
+    options: {
+      title: {
+        text: 'Chart.js Time Scale'
+      },
+      scales: {
+        xAxes: [{
+          type: 'time',
+          time: {
+            unit: 'minute'
+          },
+          scaleLabel: {
+            display: true,
+            labelString: 'Date'
+          }
+        }],
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Temperature (ºC)'
+          }
+        }]
+      },
+    }
 
   }
 
-    componentDidMount() {
-        dotenv.config();
-        console.log(process.env.REACT_APP_RT_APIKEY);
-        const client = RealtimeMessaging.createClient();
-        client.setClusterUrl("http://ortc-developers.realtime.co/server/2.1/");
-        client.connect(process.env.REACT_APP_RT_APIKEY, process.env.REACT_APP_RT_SECRET);
-        client.onConnected = (client) => {
-            console.log("realtime connected");
-            client.subscribe("channel", true, (client, channel, message) => {
-               console.log("Received message:", message);
-            });
-        }
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.timer)
-        
-    }
-
-    increment() {
+  componentDidMount() {
+    dotenv.config();
+    console.log(process.env.REACT_APP_RT_APIKEY);
+    const client = RealtimeMessaging.createClient();
+    client.setClusterUrl("http://ortc-developers.realtime.co/server/2.1/");
+    client.connect(process.env.REACT_APP_RT_APIKEY, process.env.REACT_APP_RT_SECRET);
+    client.onConnected = (client) => {
+      console.log("realtime connected");
+      client.subscribe(this.props.sensor, true, (client, channel, message) => {
+        console.log("Received message:", message);
+        const jsonObj = JSON.parse(message);
         const datasetsCopy = this.state.data.datasets.slice(0);
-        const labelCopy = this.state.data.labels.slice(0);
-        labelCopy.push((parseInt(labelCopy[labelCopy.length-1])+1).toString());
-        const dataCopy = datasetsCopy[0].data.slice(0);
-        dataCopy.push(dataCopy[0]);
-        dataCopy.splice(0,1);
-        datasetsCopy[0].data = dataCopy;
-
-       
-        labelCopy.splice(0, 1);
-
+        const timestamps = this.state.data.labels.slice(0);
+        timestamps.push(jsonObj.timestamp);
+        datasetsCopy[0].data.push(jsonObj.measurement);
+        if (datasetsCopy[0].data.length > 50) {
+          datasetsCopy[0].data.shift();
+          timestamps.shift();
+        }
         this.setState({
-            data: Object.assign({}, this.state.data, {
-                datasets: datasetsCopy,
-                labels: labelCopy
-            })
+          data: Object.assign({}, this.state.data, {
+            datasets: datasetsCopy,
+            labels: timestamps
+          })
         });
-    }
+      });
+    };
+    var measurements = [];
+    var timestamps = [];
 
+    fetch('/api/v1/web/rdiaz82IotDemo_dev/default/fetchData.json', {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: 'post',
+        body: JSON.stringify({
+          'sensor': this.props.sensor
+        })
+      })
+      .then(function(res) {
+        return res.json();
+      })
+      .then((responseData) => {
+          console.log(responseData.result);
+          if (responseData.result != null) {
+        const arrObj = responseData.result.sort(function(a, b) {
+          return Date.parse(a.timestamp) - Date.parse(b.timestamp);
+        });
+          
+        console.log(arrObj);
+        responseData.result.forEach(function(item) {
+          measurements.push(item.measurement);
+          timestamps.push(item.timestamp);
+        });
 
+        const datasetsCopy = this.state.data.datasets.slice(0);
+        datasetsCopy[0].data = measurements;
+        this.setState({
+          data: Object.assign({}, this.state.data, {
+            datasets: datasetsCopy,
+            labels: timestamps
+          })
+        });
+          }
+      });
+  }
 
-  render(){
-      return (
-          <div classname="chart">
-        <Line
-          data={this.state.data}
-        />
-      </div>
-      )
+  render() {
+    return ( < div classname = "chart" >
+
+      <
+      Line data = {
+        this.state.data
+      }
+      options = {
+        this.state.options
+      }
+      width = {
+        this.props.width
+      }
+      height = {
+        this.props.height
+      }
+      /></div >
+    );
   }
 }
 

@@ -1,61 +1,42 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import React, {
+  Component
+} from 'react';
 import './App.css';
+import logo from "./images/logo.svg";
 import Chart from './components/Chart';
-
-require('dotenv').config();
-
+import Tanks from './components/tanks';
+require('dotenv')
+  .config();
 
 class App extends Component {
-  constructor(){
-    super();
-    this.state = {
-      chartData:{}
-    }
-  }
+    render() {
 
-  componentWillMount(){
-    this.getChartData();
-  }
-
-  getChartData(){
-    // Ajax calls here
-    this.setState({
-      chartData:{
-        labels: ['Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge', 'New Bedford'],
-        datasets:[
-          {
-            label:'Population',
-            data:[
-              617594,
-              181045,
-              153060,
-              106519,
-              105162,
-              95072
-            ],
-            backgroundColor:[
-              'rgba(255, 99, 132, 0.6)',
-              'rgba(54, 162, 235, 0.6)',
-              'rgba(255, 206, 86, 0.6)',
-              'rgba(75, 192, 192, 0.6)',
-              'rgba(153, 102, 255, 0.6)',
-              'rgba(255, 159, 64, 0.6)',
-              'rgba(255, 99, 132, 0.6)'
-            ]
-          }
-        ]
-      }
-    });
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <Chart chartData={this.state.chartData} location="Massachusetts" legendPosition="bottom"/>
-      </div>
+      return (
+              <div className = "App" >
+              <img className="col-2 logo" src={logo}/>
+              <div>
+              <Tanks tank1={"sensor1"}
+          tank2={"sensor2"}
+          valve1={"sensor5"}
+          valve2={"sensor6"}
+          valve3={"sensor7"}
+          pump={"sensor8"}
+          heater1={"sensor9"}
+          heater2={"sensor10"}
+              />
+            </div>
+      <div class ="row align-items-center">
+      <div className ="col-6">
+              <Chart sensor = {"sensor3"} label={"Mashing Tank"} />
+            </div>
+              <div className ="col-6">
+              <Chart sensor = {"sensor4"} label={"Boiling Tank"}/>
+            </div>
+                </div>
+                </div>
     );
-  }
+    }
 }
 
 export default App;

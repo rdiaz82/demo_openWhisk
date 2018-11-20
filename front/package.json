@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
+    "bootstrap": "^4.1.3",
     "chart.js": "^2.7.3",
     "dotenv": "^6.1.0",
-    "react": "^16.6.0",
+    "react": "^16.6.3",
     "react-chartjs-2": "^2.7.4",
-    "react-dom": "^16.6.0",
+    "react-dom": "^16.6.3",
+    "react-liquid-gauge": "^1.2.4",
     "react-scripts": "2.1.1",
     "realtime-messaging": "^2.1.42"
   },
@@ -15,11 +18,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "deploy": "aws s3 sync build/ s3://openwhisktheam",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
+  "proxy": "https://openwhisk.eu-gb.bluemix.net/",
   "browserslist": [
     ">0.2%",
     "not dead",

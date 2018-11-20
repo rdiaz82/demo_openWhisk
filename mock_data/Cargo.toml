@@ -1,0 +1,8 @@
+[package]
+name = "mock_data"
+version = "0.1.0"
+authors = ["Roberto Diaz <roberto@theagilemonkeys.com>"]
+
+[dependencies]
+reqwest = "0.9.3"
+hyper = "0.12"

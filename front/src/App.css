@@ -2,31 +2,91 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
+.tankImage {
+    height:335px;
+    width:613px;
+    margin-left:auto;
+    margin-right:auto;
+    position:relative;
+    background-image: url("./images/plant.png");
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.tank1Gauge{
+    width:100px;
+    height:100px;
+    position:absolute;
+    top:87px;
+    left:100px;
 }
 
-.App-link {
-  color: #61dafb;
+.tank2Gauge{
+    width:100px;
+    height:100px;
+    position:absolute;
+    top:87px;
+    left:415px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.valve1{
+    width: 38px;
+    height:38px;
+    //background-image: url("./images/valve_on.png");
+    position:absolute;
+    top:61px;
+    left: 24px;
 }
+
+.valve2{
+    width: 38px;
+    height:38px;
+    background-image: url("./images/valve_on.png");
+    position:absolute;
+    top:197px;
+    left: 225px;
+}
+
+
+.valve3{
+    width: 38px;
+    height:38px;
+    background-image: url("./images/valve_on.png");
+    position:absolute;
+    top:147px;
+    left: 559px;
+}
+
+.pump{
+    width: 53px;
+    height:44px;
+    background-image: url("./images/pump_on.png");
+    position:absolute;
+    top:181px;
+    left: 285px;
+}
+
+.heater1{
+    width: 47px;
+    height:48px;
+    background-image: url("./images/heat_on.png");
+    position:absolute;
+    top:209px;
+    left: 127px;
+}
+
+.heater2{
+    width: 47px;
+    height:48px;
+    background-image: url("./images/heat_on.png");
+    position:absolute;
+    top:209px;
+    left: 441px;
+}
+
+.logo{
+    position:absolute;
+    top:30px;
+    left:30px;
+    width:200px;
+}
+
+

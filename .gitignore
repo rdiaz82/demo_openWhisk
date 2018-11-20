@@ -2,6 +2,9 @@
 # will have compiled files and executables
 /demo_openwhisk/target/
 /demo_openwhisk/temp/
+/mock_data/target/
+/mock_data/temp/
+
 
 # Remove Cargo.lock from gitignore if creating an executable, leave it for libraries
 # More information here https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html
@@ -19,3 +22,4 @@ Cargo.lock
 ### REACT APP ###
 /front/node_modules
 /front/.env
+/front/build

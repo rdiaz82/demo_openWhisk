@@ -19,7 +19,7 @@ fn main() {
             }
         }
     };
-    println!("{{\"result\":{}}}",  core::get_data_from_db(sensor, minutes));
+    println!("{{\"result\":{}}}",  core::log_repository::get_data_from_db(sensor, minutes));
 }
 
 

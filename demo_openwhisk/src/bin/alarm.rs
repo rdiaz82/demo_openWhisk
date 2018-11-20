@@ -11,9 +11,8 @@ use std::env;
 use std::str::FromStr;
 
 fn main() {
-    core::set_env();
+    core::common::set_env();
     let mut measurement = "0".to_string();
-    let mut trigger_value = "0".to_string();
     let mut sensor = "".to_string();
 
     if let Some(arg1) = env::args().nth(1) {
@@ -25,29 +24,26 @@ fn main() {
             if let Some(params_name) = params_obj.get("sensor") {
                 sensor = params_name.as_string().unwrap().to_string();
             }
-            if let Some(params_name) = params_obj.get("TRIGGER_VALUE") {
-                trigger_value = params_name.as_string().unwrap().to_string();
-            }
         }
     };
-
-    let launch = f32::from_str(&measurement).unwrap() > f32::from_str(&trigger_value).unwrap();
+    let alarm_register:core::models::AlarmInformation = core::alarm_repository::get_alarm_information(&sensor).unwrap();
+    let launch = f32::from_str(&measurement).unwrap() > alarm_register.trigger;
     let out;
-    if launch && !core::get_alarm_status(&sensor) {
-        out = core::Output {
+    if launch && !alarm_register.status {
+        out = core::models::Output {
             status: "true".to_string(),
-            message: format!("System in danger, **{}** measure value higher than: **{}**", sensor, trigger_value.to_string()),
-            data: core::DbData{
+            message: alarm_register.clone().fire_message,
+            data: core::models::DbData{
                 measurement: measurement.parse().unwrap(),
                 sensor: sensor.clone(),
                 timestamp: Utc::now().to_string(),
             },
         };
-    } else if core::get_alarm_status(&sensor) && !launch {
-        out = core::Output {
+    } else if alarm_register.status && !launch {
+        out = core::models::Output {
             status: "true".to_string(),
-            message: format!("System has returned to normal status, **{}** measurement under: **{}**",sensor, trigger_value.to_string()),
-            data: core::DbData{
+            message: alarm_register.clone().normal_message,
+            data: core::models::DbData{
                 measurement: measurement.parse().unwrap(),
                 sensor: sensor.clone(),
                 timestamp: Utc::now().to_string(),
@@ -55,17 +51,17 @@ fn main() {
         };
     }
     else {
-        out = core::Output {
+        out = core::models::Output {
             status: "false".to_string(),
             message: "".to_string(),
-            data: core::DbData{
+            data: core::models::DbData{
                 measurement: measurement.parse().unwrap(),
                 sensor: sensor.clone(),
                 timestamp: Utc::now().to_string(),
             },
         };
     }
-    core::update_alarm_status(&sensor, launch);
+    core::alarm_repository::update_alarm_status(&alarm_register, launch);
 
     println!("{}", serde_json::to_string(&out).unwrap());
 }
