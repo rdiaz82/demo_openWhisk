@@ -12,13 +12,14 @@
     "react-dom": "^16.6.3",
     "react-liquid-gauge": "^1.2.4",
     "react-scripts": "2.1.1",
-    "realtime-messaging": "^2.1.42"
+    "realtime-messaging": "^2.1.42",
+    "serverless-finch": "^2.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "deploy": "aws s3 sync build/ s3://openwhisktheam",
+    "deploy": "sls client deploy --no-confirm",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
