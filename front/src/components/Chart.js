@@ -13,16 +13,16 @@ import dotenv from 'dotenv';
 
 // Disable animating charts by default.
 defaults.global.animation = false;
+defaults.global.legend = false;
 
 class Chart extends Component {
 
   state = {
-    displayTitle: true,
-    displayLegend: true,
-    legendPosition: 'right',
+    displayTitle: false,
+      displayLegend: false,
+      displayLabel: false,
     data: {
       datasets: [{
-        label: this.props.label,
         fill: false,
         lineTension: 0.1,
         backgroundColor: 'rgba(75,192,192,0.4)',
@@ -43,9 +43,6 @@ class Chart extends Component {
       }]
     },
     options: {
-      title: {
-        text: 'Chart.js Time Scale'
-      },
       scales: {
         xAxes: [{
           type: 'time',
@@ -137,7 +134,10 @@ class Chart extends Component {
   }
 
   render() {
-    return ( < div classname = "chart" >
+      return (
+<div>
+              <p><span class="dot"></span> {this.props.label}</p>
+              < div className = "chart" >
 
       <
       Line data = {
@@ -152,7 +152,7 @@ class Chart extends Component {
       height = {
         this.props.height
       }
-      /></div >
+      /></div ></div>
     );
   }
 }

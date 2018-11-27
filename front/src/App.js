@@ -14,7 +14,10 @@ class App extends Component {
 
       return (
               <div className = "App" >
-              <img className="col-2 logo" src={logo}/>
+              <div className="col-3 title">
+              <h1>IoT Monitoring</h1>
+              <img className="logo_img" src={logo}/>
+              </div>
               <div>
               <Tanks tank1={"sensor1"}
           tank2={"sensor2"}
@@ -28,10 +31,11 @@ class App extends Component {
             </div>
       <div class ="row align-items-center">
       <div className ="col-6">
-              <Chart sensor = {"sensor3"} label={"Mashing Tank"} />
+              <Chart sensor = {"sensor3"} label={"Mashing Tank"} height={"120px"}/>
             </div>
               <div className ="col-6">
-              <Chart sensor = {"sensor4"} label={"Boiling Tank"}/>
+              
+              <Chart sensor = {"sensor4"} label={"Boiling Tank"}  height={"120px"}/>
             </div>
                 </div>
                 </div>

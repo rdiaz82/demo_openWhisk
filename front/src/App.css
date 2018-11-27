@@ -1,12 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Prompt:300,400,700');
+
 .App {
-  text-align: center;
+    text-align: center;
+    margin-left:30px;
+    margin-right:30px;
 }
+
+p{
+    font-family:'Prompt';
+    font-weight:700;
+}
+
+h1{
+    font-family:'Prompt';
+    font-weight:700;
+}
+
 
 .tankImage {
     height:335px;
     width:613px;
     margin-left:auto;
     margin-right:auto;
+    margin-top:40px;
     position:relative;
     background-image: url("./images/plant.png");
 }
@@ -30,7 +46,7 @@
 .valve1{
     width: 38px;
     height:38px;
-    //background-image: url("./images/valve_on.png");
+    background-image: url("./images/valve_on.png");
     position:absolute;
     top:61px;
     left: 24px;
@@ -82,11 +98,28 @@
     left: 441px;
 }
 
-.logo{
+.title{
     position:absolute;
+    text-align:left;
     top:30px;
     left:30px;
-    width:200px;
+    width:350px;
 }
 
+.logo_img{
+    position:relative;
+    width:100px;
+    height:40px;
+}
 
+.chart {
+    margin-top:0px;
+}
+
+.dot {
+    height: 12px;
+    width: 12px;
+    background-color: #000;
+    border-radius: 50%;
+    display: inline-block;
+}
