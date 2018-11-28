@@ -9,7 +9,7 @@ plugins:
   - serverless-finch
 
 custom:
-  siteName: <your-s3-bucket-name>
+  siteName: factory.theam.work
   client:
     bucketName: ${self:custom.siteName}
     distributionFolder: build
