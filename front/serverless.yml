@@ -1,0 +1,15 @@
+service: factory-iot-openwhisk
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: eu-west-1
+
+plugins:
+  - serverless-finch
+
+custom:
+  siteName: factory.theam.work
+  client:
+    bucketName: ${self:custom.siteName}
+    distributionFolder: build
