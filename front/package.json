@@ -19,7 +19,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "deploy": "sls client deploy --no-confirm",
+    "deploy": "aws s3 sync build/ s3://factory.theam.work",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
