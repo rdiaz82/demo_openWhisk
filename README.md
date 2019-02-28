@@ -1,14 +1,14 @@
 # OpenWhisk :heart: Rust and IoT applications
 
-------
-
 ## Introduction
 
 This repo is a demo to explore the use of OpenWhisk in combination with Rust to develop Internet of Things (IoT) applications. The proposed architecture for the whole system is the following:
 
 ![System Architecture](./images/demo_architecture.png)
 
-The main idea is simulate the process of brew beer in a factory with two temperature controlled boilers and all the pumps involved to transfer the beer wort. More information about this project can be found in this article: [:construction::construction_worker: work in progress :construction_worker::construction:]
+The main idea is simulate the process of brew beer in a factory with two temperature controlled boilers and all the pumps involved to transfer the beer wort. More information about this project can be found in this article: 
+
+:construction::construction_worker: **work in progress** :construction_worker::construction:
 
 ## Runbook
 
@@ -48,4 +48,4 @@ Under the folder `/front` is all the code for the react front. In order to un it
 
 The project also includes a simple mock application to dispatch sample data to the app. in order to run it you only need to go to `/mock_data` and execute `cargo run`. This simple script will start to dispatch events to OpenWhisk simulating the data generation from a MQTT bridge. The following animation shows the whole system working. The telegram channel (On the left) and the React dashboard (on the right) are receiving data generated with the MQTT bridge mock
 
-[insert gif]![System Animation](./images/animation.gif)
+![System Animation](./images/animation.gif)
